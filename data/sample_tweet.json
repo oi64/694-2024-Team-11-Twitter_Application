@@ -1,0 +1,272 @@
+{
+  "created_at": "Sat Apr 25 12:21:42 +0000 2020",
+  "id": 1254022772558368768,
+  "id_str": "1254022772558368768",
+  "text": "RT @BJP4India: India\u2019s war with Corona is ongoing.\n\nPlay your part and make sure no one around you starves.\n\nYour contribution to defeat hu\u2026",
+  "source": "\u003ca href=\"http:\/\/twitter.com\/download\/android\" rel=\"nofollow\"\u003eTwitter for Android\u003c\/a\u003e",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+    "id": 908326492718764034,
+    "id_str": "908326492718764034",
+    "name": "\u0936\u091a\u0940\u0928\u094d\u0926\u094d\u0930 \u092a\u093e\u0923\u094d\u0921\u0947\u092f",
+    "screen_name": "im_S_pandey",
+    "location": "Amethi Uttar Pradesh",
+    "url": null,
+    "description": "Official Twitter Handel Shachindra Pandey (@im_s_pandey) BJP IT Department Amethi District\n Fallow by Narendra Modi \n (@narendramodi) ji",
+    "translator_type": "none",
+    "protected": false,
+    "verified": false,
+    "followers_count": 2362,
+    "friends_count": 202,
+    "listed_count": 3,
+    "favourites_count": 30668,
+    "statuses_count": 48906,
+    "created_at": "Thu Sep 14 13:48:06 +0000 2017",
+    "utc_offset": null,
+    "time_zone": null,
+    "geo_enabled": true,
+    "lang": null,
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "F5F8FA",
+    "profile_background_image_url": "",
+    "profile_background_image_url_https": "",
+    "profile_background_tile": false,
+    "profile_link_color": "1DA1F2",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/1252819913820925952\/PdvkxSTA_normal.jpg",
+    "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/1252819913820925952\/PdvkxSTA_normal.jpg",
+    "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/908326492718764034\/1579091829",
+    "default_profile": true,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweeted_status": {
+    "created_at": "Sat Apr 25 07:30:12 +0000 2020",
+    "id": 1253949413191344128,
+    "id_str": "1253949413191344128",
+    "text": "India\u2019s war with Corona is ongoing.\n\nPlay your part and make sure no one around you starves.\n\nYour contribution to\u2026 https:\/\/t.co\/lKhbsMFpIA",
+    "display_text_range": [
+      0,
+      140
+    ],
+    "source": "\u003ca href=\"https:\/\/mobile.twitter.com\" rel=\"nofollow\"\u003eTwitter Web App\u003c\/a\u003e",
+    "truncated": true,
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "user": {
+      "id": 207809313,
+      "id_str": "207809313",
+      "name": "BJP",
+      "screen_name": "BJP4India",
+      "location": "6-A, Deen Dayal Upadhyay Marg,",
+      "url": "http:\/\/www.bjp.org",
+      "description": "Official Twitter account of the Bharatiya Janata Party (BJP), world's largest political party. \u092d\u093e\u0930\u0924\u0940\u092f \u091c\u0928\u0924\u093e \u092a\u093e\u0930\u094d\u091f\u0940 (\u092d\u093e\u091c\u092a\u093e)\n\nhttp:\/\/instagram.com\/bjp4india",
+      "translator_type": "none",
+      "protected": false,
+      "verified": true,
+      "followers_count": 13481667,
+      "friends_count": 3,
+      "listed_count": 3018,
+      "favourites_count": 0,
+      "statuses_count": 200315,
+      "created_at": "Tue Oct 26 02:19:07 +0000 2010",
+      "utc_offset": null,
+      "time_zone": null,
+      "geo_enabled": true,
+      "lang": null,
+      "contributors_enabled": false,
+      "is_translator": false,
+      "profile_background_color": "C0DEED",
+      "profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+      "profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+      "profile_background_tile": false,
+      "profile_link_color": "0084B4",
+      "profile_sidebar_border_color": "FFFFFF",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "profile_text_color": "333333",
+      "profile_use_background_image": false,
+      "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/812531108092874753\/frVON4bm_normal.jpg",
+      "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/812531108092874753\/frVON4bm_normal.jpg",
+      "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/207809313\/1583155635",
+      "default_profile": false,
+      "default_profile_image": false,
+      "following": null,
+      "follow_request_sent": null,
+      "notifications": null
+    },
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "is_quote_status": false,
+    "extended_tweet": {
+      "full_text": "India\u2019s war with Corona is ongoing.\n\nPlay your part and make sure no one around you starves.\n\nYour contribution to defeat hunger is as valuable as defeating Corona.\n\n#FeedTheNeedy https:\/\/t.co\/TUWf2nqPgZ",
+      "display_text_range": [
+        0,
+        179
+      ],
+      "entities": {
+        "hashtags": [
+          {
+            "text": "FeedTheNeedy",
+            "indices": [
+              166,
+              179
+            ]
+          }
+        ],
+        "urls": [],
+        "user_mentions": [],
+        "symbols": [],
+        "media": [
+          {
+            "id": 1253949383403425793,
+            "id_str": "1253949383403425793",
+            "indices": [
+              180,
+              203
+            ],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/EWbsUgwU0AEQ3G0.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/EWbsUgwU0AEQ3G0.jpg",
+            "url": "https:\/\/t.co\/TUWf2nqPgZ",
+            "display_url": "pic.twitter.com\/TUWf2nqPgZ",
+            "expanded_url": "https:\/\/twitter.com\/BJP4India\/status\/1253949413191344128\/photo\/1",
+            "type": "photo",
+            "sizes": {
+              "thumb": {
+                "w": 150,
+                "h": 150,
+                "resize": "crop"
+              },
+              "small": {
+                "w": 680,
+                "h": 680,
+                "resize": "fit"
+              },
+              "large": {
+                "w": 1200,
+                "h": 1200,
+                "resize": "fit"
+              },
+              "medium": {
+                "w": 1200,
+                "h": 1200,
+                "resize": "fit"
+              }
+            }
+          }
+        ]
+      },
+      "extended_entities": {
+        "media": [
+          {
+            "id": 1253949383403425793,
+            "id_str": "1253949383403425793",
+            "indices": [
+              180,
+              203
+            ],
+            "media_url": "http:\/\/pbs.twimg.com\/media\/EWbsUgwU0AEQ3G0.jpg",
+            "media_url_https": "https:\/\/pbs.twimg.com\/media\/EWbsUgwU0AEQ3G0.jpg",
+            "url": "https:\/\/t.co\/TUWf2nqPgZ",
+            "display_url": "pic.twitter.com\/TUWf2nqPgZ",
+            "expanded_url": "https:\/\/twitter.com\/BJP4India\/status\/1253949413191344128\/photo\/1",
+            "type": "photo",
+            "sizes": {
+              "thumb": {
+                "w": 150,
+                "h": 150,
+                "resize": "crop"
+              },
+              "small": {
+                "w": 680,
+                "h": 680,
+                "resize": "fit"
+              },
+              "large": {
+                "w": 1200,
+                "h": 1200,
+                "resize": "fit"
+              },
+              "medium": {
+                "w": 1200,
+                "h": 1200,
+                "resize": "fit"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "quote_count": 16,
+    "reply_count": 101,
+    "retweet_count": 340,
+    "favorite_count": 1870,
+    "entities": {
+      "hashtags": [],
+      "urls": [
+        {
+          "url": "https:\/\/t.co\/lKhbsMFpIA",
+          "expanded_url": "https:\/\/twitter.com\/i\/web\/status\/1253949413191344128",
+          "display_url": "twitter.com\/i\/web\/status\/1\u2026",
+          "indices": [
+            116,
+            139
+          ]
+        }
+      ],
+      "user_mentions": [],
+      "symbols": []
+    },
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "filter_level": "low",
+    "lang": "en"
+  },
+  "is_quote_status": false,
+  "quote_count": 0,
+  "reply_count": 0,
+  "retweet_count": 0,
+  "favorite_count": 0,
+  "entities": {
+    "hashtags": [],
+    "urls": [],
+    "user_mentions": [
+      {
+        "screen_name": "BJP4India",
+        "name": "BJP",
+        "id": 207809313,
+        "id_str": "207809313",
+        "indices": [
+          3,
+          13
+        ]
+      }
+    ],
+    "symbols": []
+  },
+  "favorited": false,
+  "retweeted": false,
+  "filter_level": "low",
+  "lang": "en",
+  "timestamp_ms": "1587817302251"
+}
