@@ -5,19 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a83a763d-3b21-48df-8c61-39984f8ca621" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Twitter_Search.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Constants.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MySQLConnector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TwitterUser.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/User.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/corona-out-2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/sample_tweet.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/sample_user.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.streamlit/config.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/InvertedIndexing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MongoDBConnector.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SearchApp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TwitterUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/TwitterUser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sample_tweet.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sample_tweet.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +28,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -45,7 +42,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.InvertedIndexing.executor": "Run",
+    "Python.MongoDBConnector.executor": "Debug",
     "Python.Python Console.executor": "Debug",
+    "Python.SearchApp.executor": "Debug",
+    "Python.TwitterUser.executor": "Run",
     "Python.twitter_connection.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -62,7 +63,7 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.TwitterUser">
+  <component name="RunManager">
     <configuration name="Python Console" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Twitter_Search" />
       <option name="ENV_FILES" value="" />
@@ -132,13 +133,29 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/User.py</url>
-          <line>18</line>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/SearchApp.py</url>
+          <line>56</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/SearchApp.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

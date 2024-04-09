@@ -5,6 +5,21 @@ from MySQLConnector import MySQLConnector
 import Constants
 
 ##
+def add_unique_user(data):
+    users_temp = []
+    users_temp.append(data['user'])
+
+    if data['is_quote_status'] == True:
+        users_temp.append(data['quoted_status']['user'])
+
+    if (data['text'].startswith('RT')):
+        users_temp.append(data['retweeted_status']['user'])
+
+    for user in users_temp:
+        if user['id_str'] not in users:
+            users[user['id_str']] = user
+
+##
 lines = 0
 num_tweets = 0
 num_retweets = 0
@@ -18,16 +33,17 @@ with open(filename, "r") as f1:
     for line in f1:
         try:
             data = json.loads(line)
+            add_unique_user(data)
             lines = lines + 1
-            user = data['user']
+
             if (data['text'].startswith('RT')):
                 num_retweets += 1
             else:
                 num_tweets += 1
+
             if (data['id_str'] not in tweets):
                 tweets[data['id_str']] = data
-            if user['id_str'] not in users:
-                users[user['id_str']] = user
+
         except:
             # if there is an error loading the json of the tweet, skip
             error_count += 1
@@ -49,3 +65,6 @@ for ID, user_itr in users.items():
     connector.execute_query(query, User.get_user_tuple(user_instance))
 
 connector.close_server_connection()
+
+##
+
