@@ -5,3 +5,6 @@ pandas
 scikit-learn
 pymongo
 nltk
+mysql
+mysql-connector-python
+sentence-transformers

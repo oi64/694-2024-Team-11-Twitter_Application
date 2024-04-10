@@ -7,167 +7,155 @@ from sklearn.cluster import KMeans
 from collections import Counter
 import numpy as np
 ##
-# Connect to MongoDB
-client = pymongo.MongoClient("mongodb://localhost:27017/")
 
-# Create a new database
-db = client["twitter"]
-
-# Create a new collection
-collection = db["tweet_embeddings"]
-
-##
+database_name = 'twitter'
+collection_name = 'tweet_embeddings'
 filename = "data/corona-out-2"
-error_count = 0
 
 
-with open(filename, "r") as f1:
-    for line in f1:
-        tweet = {}
-        try:
-            data = json.loads(line)
+def connect_to_mongodb(database_name, collection_name):
+    try:
+        client = pymongo.MongoClient("mongodb://localhost:27017/")
 
-            if (data['text'].startswith('RT')):
+        if database_name not in client.list_database_names():
+            db = client[database_name]
+            print(f"Database '{database_name}' created.")
+        else:
+            db = client[database_name]
+
+        if collection_name not in db.list_collection_names():
+            collection = db[collection_name]
+            print(f"Collection '{collection_name}' created in database '{database_name}'.")
+        else:
+            collection = db[collection_name]
+
+        return client, db, collection
+
+    except Exception as e:
+        print(f"Error connecting to MongoDB: {e}")
+        return None, None, None
+
+
+def insert_tweets_from_file(collection, filename = filename):
+    error_count = 0
+
+    with open(filename, "r") as f1:
+        for line in f1:
+            tweet = {}
+            try:
+                data = json.loads(line)
+
+                if data['text'].startswith('RT'):
+                    continue
+                else:
+                    tweet["_id"] = data["id_str"]
+                    tweet["text"] = data['text']
+                    tweet["user"] = data['user']['screen_name']
+                    # tweet_encoding = get_tweet_encodings(data['text'])
+                    # tweet["text_embeddings"] = tweet_encoding.tolist()
+                collection.insert_one(tweet)
+            except Exception as e:
+                # if there is an error loading the json of the tweet, skip
+                error_count += 1
+                print(f"Error inserting tweet: {e}")
                 continue
-            else:
-                tweet["_id"] = data["id_str"]
-                tweet["text"] = data['text']
-                tweet["user"] = data['user']['screen_name']
-                # tweet_encoding = get_tweet_encodings(data['text'])
-                # tweet["text_embeddings"] = tweet_encoding.tolist()
-            collection.insert_one(tweet)
-        except:
-            # if there is an error loading the json of the tweet, skip
-            error_count += 1
-            continue
+    print(f'The number of errors is {error_count}')
+
+    return None
 
 
-##
-# Function to get tweet encodings in batches
 def get_tweet_encodings_in_batches(bulk_documents):
     model = SentenceTransformer('all-mpnet-base-v2')
     tweet_texts = [tweet['text'] for tweet in bulk_documents]
     tweet_encodings = model.encode(tweet_texts)
     return tweet_encodings
 
+def add_tweet_embeddings_to_documents(collection, batch_size=1000):
+    bulk_documents = []
 
-# Initialize an empty list to store the bulk operations
-bulk_operations = []
-bulk_documents = []
-batch_size = 1000
+    for document in collection.find():
+        bulk_documents.append(document)
+        if len(bulk_documents) == batch_size:
+            tweet_encodings = get_tweet_encodings_in_batches(bulk_documents)
+            for document, tweet_encoding in zip(bulk_documents, tweet_encodings):
+                collection.update_one(
+                    {"_id": document["_id"]},
+                    {"$set": {"text_embeddings": tweet_encoding.tolist()}}
+                )
+            bulk_documents = []
 
-# Iterate over the documents in the collection and add the "text_embeddings" field
-for document in collection.find():
-    bulk_documents.append(document)
-    # Execute bulk update every batch_size documents
-    if len(bulk_documents) == batch_size:
+    if bulk_documents:
         tweet_encodings = get_tweet_encodings_in_batches(bulk_documents)
         for document, tweet_encoding in zip(bulk_documents, tweet_encodings):
             collection.update_one(
                 {"_id": document["_id"]},
                 {"$set": {"text_embeddings": tweet_encoding.tolist()}}
             )
-        bulk_operations = []
-        bulk_documents = []
 
-tweet_encodings = get_tweet_encodings_in_batches(bulk_documents)
-for document, tweet_encoding in zip(bulk_documents, tweet_encodings):
-    collection.update_one(
-        {"_id": document["_id"]},
-        {"$set": {"text_embeddings": tweet_encoding.tolist()}}
-    )
+def cluster_tweets_and_save_to_collections(collection, db):
+    documents = list(collection.find())
+    X = np.array([doc['text_embeddings'] for doc in documents])
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    kmeans = KMeans(n_clusters=7, random_state=0)
+    kmeans.fit(X_scaled)
+    labels = kmeans.labels_
 
+    for i, label in enumerate(labels):
+        cluster_collection = db[f'tweet_cluster_{label}']
+        cluster_collection.insert_one(documents[i])
 
-##
-# Get the size of the collection
-# Get the stats for the collection
-collection_stats = db.command("collstats", "tweet_embeddings")
-print(collection_stats)
+def calculate_and_save_cluster_centroids(db, num_centroids = 7):
+    centroids = []
 
-##
+    for i in range(num_centroids):
+        cluster_collection = db[f'tweet_cluster_{i}']
+        documents = list(cluster_collection.find())
+        embeddings = np.array([doc['text_embeddings'] for doc in documents])
+        centroid = np.mean(embeddings, axis=0)
+        centroids.append(centroid.tolist())
 
+        centroids_collection = db['tweet_cluster_centroids']
+        centroids_collection.insert_one({'_id': f'cluster_{i}', 'centroid': centroid.tolist()})
 
-# Fetch documents from MongoDB
-documents = list(collection.find())
+def print_cluster_centroids(collection):
+    for document in collection.find():
+        print(document)
 
-# Extract text embeddings from documents
-X = np.array([doc['text_embeddings'] for doc in documents])
+def print_collection_names(db):
+    print(db.list_collection_names())
 
-# Normalize the data
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Fit KMeans clustering
-kmeans = KMeans(n_clusters=7, random_state=0)
-kmeans.fit(X_scaled)
-
-# Get cluster labels
-labels = kmeans.labels_
-
-##
-# Count the frequency of each element
-frequency = Counter(labels)
-
-# Print the frequency of each element
-for element, count in frequency.items():
-    print(f"Element {element} appears {count} times")
-##
-# Save the clusters into different collections
-for i, label in enumerate(labels):
-    cluster_collection = db[f'tweet_cluster_{label}']
-    cluster_collection.insert_one(documents[i])
-
-##
-# Define the range of cluster collections
-cluster_range = range(7)
-
-# Initialize an empty list to store centroids
-centroids = []
-
-# Iterate over each cluster collection
-for i in cluster_range:
-    # Get the current cluster collection
-    cluster_collection = db[f'tweet_cluster_{i}']
-
-    # Get all documents from the current cluster collection
-    documents = list(cluster_collection.find())
-
-    # Extract text embeddings from documents
-    embeddings = np.array([doc['text_embeddings'] for doc in documents])
-
-    # Calculate the centroid
-    centroid = np.mean(embeddings, axis=0)
-
-    # Append the centroid to the list of centroids
-    centroids.append(centroid.tolist())
-
+def delete_cluster_centroids_collection(db):
     centroids_collection = db['tweet_cluster_centroids']
+    centroids_collection.delete_many({})
 
-    centroids_collection.insert_one({'_id':'cluster_' + str(i),'centroid': centroid.tolist()})
+def main():
+    client, db, collection = connect_to_mongodb(database_name, collection_name)
+    if collection.count_documents({}) == 0:
+        insert_tweets_from_file(collection)
+    if client is not None and db is not None and collection is not None:
+            # Check if embeddings already exist in any document
+            if not any('text_embeddings' in doc for doc in collection.find()):
+                # If embeddings do not exist, run the functions to add embeddings and cluster tweets
+                add_tweet_embeddings_to_documents(collection)
+                cluster_tweets_and_save_to_collections(collection, db)
+                calculate_and_save_cluster_centroids(db)
+            else:
+                print("Embeddings already exist in some documents. Skipping the functions.")
 
-##
-collection = db['tweet_cluster_centroids']
+            # Print cluster centroids
+            print_cluster_centroids(db['tweet_cluster_centroids'])
+            # Print collection names
+            print_collection_names(db)
 
-# Print all documents in the collection
-for document in collection.find():
-    print(document)
+            # Delete cluster centroids collection
+            delete_cluster_centroids_collection(db)
 
-##
-print(client.list_database_names())
+            # Close the MongoDB connection
+            client.close()
+    else:
+        print("Connection to MongoDB failed.")
 
-##
-print(db.list_collection_names())
-
-##
-centroids_collection = db['tweet_cluster_centroids']
-centroids_collection.delete_many({})
-
-# ##
-# # Get the list of collection names in the database
-# collection_names = db.list_collection_names()
-#
-# # Drop each collection in the database
-# for collection_name in collection_names:
-#     db.drop_collection(collection_name)
+main()
 
 
