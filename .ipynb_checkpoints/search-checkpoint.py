@@ -49,32 +49,3 @@ def search(input_keyword, db = db, collection = collection):
     top_5_tweets = [all_tweets[i] for i in top_5_indices]
 
     return top_5_tweets
-
-
-# +
-class TwitterCache:
-    def __init__(self):
-        self.cache = {}
-
-    def get(self, query):
-        if query in self.cache:
-            return self.cache[query]
-        else:
-            return None
-
-    def set(self, query, result):
-        self.cache[query] = result
-
-
-
-# +
-# Example usage:
-cache = TwitterCache()
-
-# Perform Twitter search
-search_query = "Python"
-search_result = search(search_query, db, collection)
-
-# -
-
-sear

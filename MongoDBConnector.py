@@ -105,7 +105,7 @@ def cluster_tweets_and_save_to_collections(collection, db):
         cluster_collection = db[f'tweet_cluster_{label}']
         cluster_collection.insert_one(documents[i])
 
-def calculate_and_save_cluster_centroids(db, num_centroids = 7):
+def calculate_and_save_cluster_centroids(db, num_centroids = 15):
     centroids = []
 
     for i in range(num_centroids):
@@ -147,9 +147,6 @@ def main():
             print_cluster_centroids(db['tweet_cluster_centroids'])
             # Print collection names
             print_collection_names(db)
-
-            # Delete cluster centroids collection
-            delete_cluster_centroids_collection(db)
 
             # Close the MongoDB connection
             client.close()
