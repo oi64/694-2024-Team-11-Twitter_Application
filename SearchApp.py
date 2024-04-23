@@ -1,11 +1,9 @@
 ##
 import streamlit as st
 import toml
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import euclidean_distances
 import pymongo
-from search import search
 import os
+from popularity import return_top_5
 
 ##
 cwd = os.getcwd()
@@ -43,40 +41,24 @@ db = client["twitter"]
 collection = db["tweet_cluster_centroids"]
 
 
-top_5_tweets = search("Trump")
-print(top_5_tweets)
 
-def search(input_keyword):
-    model = SentenceTransformer('all-mpnet-base-v2')
-    vector_of_input_keyword = model.encode(input_keyword)
+# def search(input_keyword, n_clusters = 15):
+#     model = SentenceTransformer('all-mpnet-base-v2')
+#     vector_of_input_keyword = model.encode(input_keyword)
 
-    # Find the closest cluster to the input vector
-    closest_cluster = None
-    min_distance = float('inf')
-    for i in range(7):  # Assuming 7 clusters tweet_cluster_0 to tweet_cluster_6
-        centroid_doc = collection.find_one({"_id": f"cluster_{i}"})
-        centroid = centroid_doc["centroid"]
-        distance = euclidean_distances([vector_of_input_keyword], [centroid])[0][0]
-        if distance < min_distance:
-            min_distance = distance
-            closest_cluster = i
-
-    closest_cluster_collection = db[f"tweet_cluster_{closest_cluster}"]
-    tweets_in_cluster = closest_cluster_collection.find()
-    tweet_vectors = [tweet["text_embeddings"] for tweet in tweets_in_cluster]
-
-    # Calculate L2 norm distances
-    distances = euclidean_distances([vector_of_input_keyword], tweet_vectors)[0]
-
-    # Get indices of top 5 tweets
-    top_5_indices = distances.argsort()[:5]
-
-    # Retrieve top 5 tweets
-    tweets_in_cluster = closest_cluster_collection.find()
-    all_tweets = [[_tweet["user"],_tweet["text"]] for _tweet in tweets_in_cluster]
-    top_5_tweets = [all_tweets[i] for i in top_5_indices]
-
-    return top_5_tweets
+#     # Find the closest cluster to the input vector
+#     closest_cluster = None
+#     min_distance = float('inf')
+#     for i in range(n_clusters):  # Assuming 7 clusters tweet_cluster_0 to tweet_cluster_6
+#         centroid_doc = collection.find_one({"_id": f"cluster_{i}"})
+#         centroid = centroid_doc["centroid"]
+#         distance = euclidean_distances([vector_of_input_keyword], [centroid])[0][0]
+#         if distance < min_distance:
+#             min_distance = distance
+#             closest_cluster = i
+#     top_5_tweets = rankTweets(vector_of_input_keyword, closest_cluster)
+    
+#     return top_5_tweets
 
 ##
 def main():
@@ -89,7 +71,7 @@ def main():
     if st.button("Search"):
         if search_query:
             # Perform the search and get results
-            results = search(search_query)
+            results = return_top_5(search_query, collection)
 
             # Display search results
             st.subheader("Search Results")
