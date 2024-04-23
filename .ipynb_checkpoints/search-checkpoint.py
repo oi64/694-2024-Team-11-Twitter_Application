@@ -49,3 +49,10 @@ def search(input_keyword, db = db, collection = collection):
     top_5_tweets = [all_tweets[i] for i in top_5_indices]
 
     return top_5_tweets
+
+
+
+
+
+
+

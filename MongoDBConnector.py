@@ -22,7 +22,7 @@ def connect_to_mongodb(database_name, collection_name):
             print(f"Database '{database_name}' created.")
         else:
             db = client[database_name]
-
+        print('database connected')
         if collection_name not in db.list_collection_names():
             collection = db[collection_name]
             print(f"Collection '{collection_name}' created in database '{database_name}'.")
@@ -92,18 +92,23 @@ def add_tweet_embeddings_to_documents(collection, batch_size=1000):
                 {"$set": {"text_embeddings": tweet_encoding.tolist()}}
             )
 
-def cluster_tweets_and_save_to_collections(collection, db):
+    print('Added tweet embeddings')
+
+def cluster_tweets_and_save_to_collections(collection, db, n_clusters = 15):
     documents = list(collection.find())
     X = np.array([doc['text_embeddings'] for doc in documents])
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-    kmeans = KMeans(n_clusters=7, random_state=0)
+    kmeans = KMeans(n_clusters, random_state=0)
     kmeans.fit(X_scaled)
     labels = kmeans.labels_
 
     for i, label in enumerate(labels):
         cluster_collection = db[f'tweet_cluster_{label}']
         cluster_collection.insert_one(documents[i])
+
+
+    print(f'Clustered and added tweets, num clusters = {n_clusters}')
 
 def calculate_and_save_cluster_centroids(db, num_centroids = 15):
     centroids = []
@@ -117,6 +122,8 @@ def calculate_and_save_cluster_centroids(db, num_centroids = 15):
 
         centroids_collection = db['tweet_cluster_centroids']
         centroids_collection.insert_one({'_id': f'cluster_{i}', 'centroid': centroid.tolist()})
+
+    print('saved cluster centroids')
 
 def print_cluster_centroids(collection):
     for document in collection.find():
@@ -134,8 +141,8 @@ def main():
     if collection.count_documents({}) == 0:
         insert_tweets_from_file(collection)
     if client is not None and db is not None and collection is not None:
-            # Check if embeddings already exist in any document
-            if not any('text_embeddings' in doc for doc in collection.find()):
+            print(f'Database: {db}\nCollection: {collection}')
+            if True:#not any('text_embeddings' in doc for doc in collection.find()):
                 # If embeddings do not exist, run the functions to add embeddings and cluster tweets
                 add_tweet_embeddings_to_documents(collection)
                 cluster_tweets_and_save_to_collections(collection, db)

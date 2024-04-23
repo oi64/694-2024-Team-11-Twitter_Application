@@ -5,10 +5,13 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import euclidean_distances
 import pymongo
 from search import search
+import os
 
 ##
+cwd = os.getcwd()
+print(cwd)
 # Load the TOML file
-with open('/Users/omkar/Desktop/pyCharm/Twitter_Search/.streamlit/config.toml', 'r') as f:
+with open(f'{cwd}/.streamlit/config.toml', 'r') as f:
     config = toml.load(f)
 
 # Get the color settings from the TOML file
