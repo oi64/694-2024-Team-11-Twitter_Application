@@ -1,14 +1,10 @@
 ##
-import pymongo
-import popularity
-# Connect to MongoDB
-client = pymongo.MongoClient("mongodb://localhost:27017/")
 
-# Create a new database
-db = client["twitter"]
-
-# Create a new collection
-collection = db["tweet_cluster_centroids"]
+from popular_users import find_top_10_users, find_top_hashtags
 
 
-print(popularity.return_top_5("election",collection))
+##
+users = find_top_10_users()
+user_data = [[user[1], user[2], user[3], user[4]] for user in users]
+hashtags = find_top_hashtags()
+print(hashtags)
