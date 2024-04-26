@@ -46,22 +46,26 @@ def insert_tweets_from_file(collection, filename = filename):
             try:
                 data = json.loads(line)
 
+                print(data['favorite_count'])
                 if data['text'].startswith('RT'):
                     continue
                 else:
-                    tweet["_id"] = data["id_str"]
-                    tweet["text"] = data['text']
-                    tweet["user"] = data['user']['screen_name']
-                    tweet["created_at"] = data['created_at']
-                    tweet["sentiment_score"] = sentiment_score(data['text'])  
-                    tweet["user_influence"] = user_influence(data['user']) 
-                    tweet["credibility_score"] = credibility_score(data['user'])
-                    tweet["engagement_rate"] = engagement_rate(data)  
-                    tweet["recency_score"] = recency_score(data)  
-                    tweet["media_score"] = media_score(data) 
+                    print(data['favourites_count'])
+                    # tweet["_id"] = data["id_str"]
+                    # tweet["text"] = data['text']
+                    # tweet["user"] = data['user']['screen_name']
+                    # tweet["created_at"] = data['created_at']
+                    # tweet["sentiment_score"] = sentiment_score(data['text'])
+                    # tweet["user_influence"] = user_influence(data['user'])
+                    # tweet["credibility_score"] = credibility_score(data['user'])
+                    # tweet["engagement_rate"] = engagement_rate(data)
+                    # tweet["recency_score"] = recency_score(data)
+                    # tweet["media_score"] = media_score(data)
+                    tweet['favourites_count'] = data['favourites_count']
                     
                 collection.insert_one(tweet)
             except Exception as e:
+                print(e)
                 # if there is an error loading the json of the tweet, skip
                 error_count += 1
                 # print(f"Error inserting tweet: {e}")
@@ -213,31 +217,32 @@ def full_processing_pipeline(filename):
 
 def main():
     client, db, collection = connect_to_mongodb(database_name, collection_name)
-    if collection.count_documents({}) == 0:
+    # if collection.count_documents({}) == 0:
+    if True:
         insert_tweets_from_file(collection)
-    if db['RawData'].count_documents({}) == 0:
-        full_processing_pipeline()
-    if True:#client is not None and db is not None and collection is not None:
-            print(f'Database: {db}\nCollection: {collection}')
-            if True: #not any('text_embeddings' in doc for doc in collection.find()):
-                add_tweet_embeddings_to_documents(collection)
-                cluster_tweets_and_save_to_collections(collection, db)
-                calculate_and_save_cluster_centroids(db)
-            else:
-                print("Embeddings already exist in some documents. Skipping the functions.")
-
-            # Print cluster centroids
-            print_cluster_centroids(db['tweet_cluster_centroids'])
-            # Print collection names
-            print_collection_names(db)
-
-            # Close the MongoDB connection
-            client.close()
-    else:
-        print("Connection to MongoDB failed.")
+    # if db['RawData'].count_documents({}) == 0:
+    #     full_processing_pipeline(filename)
+    # if True:#client is not None and db is not None and collection is not None:
+    #         print(f'Database: {db}\nCollection: {collection}')
+    #         if True: #not any('text_embeddings' in doc for doc in collection.find()):
+    #             add_tweet_embeddings_to_documents(collection)
+    #             cluster_tweets_and_save_to_collections(collection, db)
+    #             calculate_and_save_cluster_centroids(db)
+    #         else:
+    #             print("Embeddings already exist in some documents. Skipping the functions.")
+    #
+    #         # Print cluster centroids
+    #         print_cluster_centroids(db['tweet_cluster_centroids'])
+    #         # Print collection names
+    #         print_collection_names(db)
+    #
+    #         # Close the MongoDB connection
+    #         client.close()
+    # else:
+    #     print("Connection to MongoDB failed.")
 
 
 if __name__ == "__main__":  
     main()
-
+    # insert_tweets_from_file()
 

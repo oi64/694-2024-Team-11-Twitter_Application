@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a83a763d-3b21-48df-8c61-39984f8ca621" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.streamlit/config.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/InvertedIndexing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MongoDBConnector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SearchApp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TwitterUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/TwitterUser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sample_tweet.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sample_tweet.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data2.0.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Data2.0.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDBConnector.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDBConnector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_data_upload.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/project_data_upload.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/top_nhashtags_ntweets.py" beforeDir="false" afterPath="$PROJECT_DIR$/top_nhashtags_ntweets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,21 +38,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.InvertedIndexing.executor": "Run",
-    "Python.MongoDBConnector.executor": "Debug",
-    "Python.Python Console.executor": "Debug",
-    "Python.SearchApp.executor": "Debug",
-    "Python.TwitterUser.executor": "Run",
-    "Python.twitter_connection.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/omkar/Desktop/pyCharm/Twitter_Search",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.InvertedIndexing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.MongoDBConnector.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Python Console.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.SearchApp.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.TwitterUser.executor&quot;: &quot;Run&quot;,
+    &quot;Python.twitter_connection.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/harshatamatam/Desktop/rutgers/sem-2/dbms/final_project/Twitter_Search_Application&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -63,7 +61,7 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.Python Console">
     <configuration name="Python Console" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Twitter_Search" />
       <option name="ENV_FILES" value="" />
@@ -118,7 +116,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-5a2391486177-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13763.11" />
+        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
       </set>
     </attachedChunks>
   </component>
@@ -149,12 +147,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/SearchApp.py</url>
-          <line>56</line>
+          <line>41</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/SearchApp.py</url>
-          <line>13</line>
+          <line>14</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
