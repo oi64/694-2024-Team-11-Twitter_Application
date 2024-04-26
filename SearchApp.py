@@ -4,7 +4,7 @@ import toml
 import pymongo
 import os
 from popularity import return_top_5
-from popular_users import search_users_by_keyword
+from popular_users import search_users_by_keyword, find_hashtags_by_keyword
 from cache import cache
 
 ##
@@ -77,28 +77,18 @@ def main():
                 found = True
                 results_tweets = cache[search_query]['Tweets']
                 results_users = cache[search_query]['Users']
+                results_hashtags = cache[search_query]['Hashtags']
             else:
                 results_tweets = return_top_5(search_query, collection)
                 results_users = search_users_by_keyword(search_query)
+                results_hashtags = find_hashtags_by_keyword(keyword=search_query)
 
 
             
             # Display search results
             st.subheader("Search Results")
-            for result in results_tweets:
-                with st.container():
-                    if result :
-                        try:
-                            st.header(f"{result[0]}")
-                        except Exception as e:
-                            print(e)
-
-                        try:
-                            st.write(f"Tweet: {result[1]}")
-                        except Exception as e:
-                            print(e)
-                        st.divider()
-
+            
+            st.header('Users')
             for result in results_users:
                 with st.container():
                     if result :
@@ -123,8 +113,34 @@ def main():
                             print(e)
 
                         st.divider()
+
+            st.header('Hashtags')
+            for result in results_hashtags:
+                with st.container():
+                    if result :
+                        try:
+                            st.write(f"{result['hashtag']}")
+                        except Exception as e:
+                            print(e)
+
+                        st.divider()
+
+            st.header('Tweets')
+            for result in results_tweets:
+                with st.container():
+                    if result :
+                        try:
+                            st.write(f"{result[0]}")
+                        except Exception as e:
+                            print(e)
+
+                        try:
+                            st.write(f"Tweet: {result[1]}")
+                        except Exception as e:
+                            print(e)
+                        st.divider()
             if not found:
-                cache[search_query] = {'Tweets': results_tweets, 'Users':results_users}
+                cache[search_query] = {'Tweets': results_tweets, 'Users':results_users, 'Hashtags':results_hashtags}
 
 
 if __name__ == "__main__":
