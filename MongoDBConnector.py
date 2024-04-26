@@ -51,9 +51,6 @@ def insert_tweets_from_file(collection, filename = filename):
                     # print(data,'\n'*2)
 
                     tweet["favorite_count"] = data.get("favorite_count", 0)
-                    if (tweet['favorite_count'] > 0):
-                        print(data)
-                        break
                     tweet["_id"] = data["id_str"]
                     tweet["text"] = data['text']
                     tweet["user"] = data['user']['screen_name']

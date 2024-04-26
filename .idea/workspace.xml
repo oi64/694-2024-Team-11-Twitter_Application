@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a83a763d-3b21-48df-8c61-39984f8ca621" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SearchApp.py" beforeDir="false" afterPath="$PROJECT_DIR$/SearchApp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/popular_users.py" beforeDir="false" afterPath="$PROJECT_DIR$/popular_users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/temp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache_state.json" beforeDir="false" afterPath="$PROJECT_DIR$/cache_state.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +46,7 @@
     "Python.twitter_connection.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Rebasing dbms__v1",
+    "git-widget-placeholder": "dbms__v1",
     "last_opened_file_path": "/Users/harshatamatam/Desktop/rutgers/sem-2/dbms/final_project/Twitter_Search_Application",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
