@@ -5,26 +5,33 @@ from sklearn.metrics.pairwise import euclidean_distances
 from sentence_transformers import SentenceTransformer
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
-# nltk.download('vader_lexicon')
+nltk.download('vader_lexicon')
 from datetime import datetime
 import pymongo
 import heapq
 import numpy as np
+import ssl
+
+# Disable certificate verification
+# ssl_context = ssl.create_default_context()
+# ssl_context.check_hostname = False
+# ssl_context.verify_mode = ssl.CERT_NONE
+ssl._create_default_https_context = ssl._create_unverified_context
 
 database_name = 'twitter'
 collection_name = 'tweet_embeddings'
 filename = "data/corona-out-2"
 
-def download_vader_if_not_exist():
-    try:
-        nltk.data.find('sentiment/vader_lexicon.zip')
-    except LookupError:
-        # If not found, download it
-        print("vader_lexicon not found, downloading...")
-        nltk.download('vader_lexicon')
-        print("Download complete.")
-    else:
-        print("vader_lexicon is already downloaded.")
+# def download_vader_if_not_exist():
+#     try:
+#         nltk.data.find('sentiment/vader_lexicon.zip')
+#     except LookupError:
+#         # If not found, download it
+#         print("vader_lexicon not found, downloading...")
+#         nltk.download('vader_lexicon')
+#         print("Download complete.")
+#     else:
+#         print("vader_lexicon is already downloaded.")
 
 
 def connect_to_mongodb(database_name, collection_name):
@@ -74,7 +81,7 @@ def rankTweets(vector_of_input_keyword, closest_cluster):
     all_tweets = [[_tweet["user"],_tweet["text"], _tweet["created_at"],
                    _tweet["sentiment_score"], _tweet['user_influence'],
                    _tweet['credibility_score'], _tweet['engagement_rate'],
-                   _tweet['recency_score'], _tweet['media_score']] for _tweet in tweets_in_cluster]
+                   _tweet['recency_score'], _tweet['media_score'], _tweet['retweet_count'], _tweet['favorite_count']] for _tweet in tweets_in_cluster]
     top_50_tweets = [all_tweets[i] for i in top_5_indices]
     return top_50_tweets
 
@@ -85,12 +92,12 @@ def credibility_score(user_data):
 def engagement_rate(tweet):
     time_since_post = (datetime.now() - datetime.strptime(tweet['created_at'], '%a %b %d %H:%M:%S +0000 %Y')).total_seconds() / 3600
     engagement = (tweet['retweet_count'] + tweet['favorite_count']) / max(time_since_post, 1)  # Normalize over hours since post
-    return engagement
+    return (engagement, tweet['retweet_count'], tweet['favorite_count'])
 
 
 
 def sentiment_score(text):
-    download_vader_if_not_exist()
+    # download_vader_if_not_exist()
     sia = SentimentIntensityAnalyzer()
     score = sia.polarity_scores(text)
     return score['compound']  # Return the compound score which represents an aggregate of all sentiment scores
@@ -120,12 +127,14 @@ def user_influence(user_data):
 
 def compute_score(tweet):
     weights = {
-        'sentiment': 0.2,
-        'influence': 0.5,
-        'credibility': 0.2,
-        'engagement': 0.5,
-        'recency': 0.1,
-        'media': 0.1
+        'sentiment': 0,
+        'influence': 0,
+        'credibility': 0,
+        'engagement': 0,
+        'recency': 0,
+        'media': 0,
+        'retweet_count':1,
+        'favorite_count':1
     }
 
     features = {
@@ -133,8 +142,10 @@ def compute_score(tweet):
         'influence': tweet[4],
         'credibility': tweet[5],
         'engagement': tweet[6],
-        'recency': tweet[7],
-        'media': tweet[8]
+        'recency': tweet[9],
+        'media': tweet[10],
+        'retweet_count': tweet[7],
+        'favorite_count': tweet[8]
     }
 
     # Normalize features to a common scale if necessary
@@ -163,20 +174,24 @@ def return_top_5(input_keyword, collection, n_clusters = 15):
             min_distance = distance
             closest_cluster = i
     top_50_tweets = rankTweets(vector_of_input_keyword, closest_cluster)
+    #
+    # min_heap = []
+    #
+    # for tweet in top_50_tweets:
+    #     score = compute_score(tweet)
+    #
+    #     heapq.heappush(min_heap, (score, tweet))
+    #
+    #     if len(min_heap) > 5:
+    #         heapq.heappop(min_heap)
+    # top_5_tweets = []
+    # while min_heap:
+    #     top_5_tweets.append(heapq.heappop(min_heap)[1])
+    sorted_tweets = sorted(top_50_tweets, key=lambda tweet: compute_score(tweet), reverse=True)
 
-    min_heap = []
+    # Return the top 5 tweets
+    return sorted_tweets[:5]
 
-    for tweet in top_50_tweets:
-        score = compute_score(tweet)
-        
-        heapq.heappush(min_heap, (-score, tweet))
-        
-        if len(min_heap) > 5:
-            heapq.heappop(min_heap)
-    top_5_tweets = []
-    while min_heap:
-        top_5_tweets.append(heapq.heappop(min_heap)[1])
-
-    return top_5_tweets[::-1]
+    #return top_5_tweets[::-1]
 
 

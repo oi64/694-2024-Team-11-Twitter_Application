@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a83a763d-3b21-48df-8c61-39984f8ca621" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.streamlit/config.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/InvertedIndexing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MongoDBConnector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SearchApp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TwitterUser.py" beforeDir="false" afterPath="$PROJECT_DIR$/TwitterUser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MongoDBConnector.py" beforeDir="false" afterPath="$PROJECT_DIR$/MongoDBConnector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SearchApp.py" beforeDir="false" afterPath="$PROJECT_DIR$/SearchApp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/sample_tweet.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sample_tweet.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/popularity.py" beforeDir="false" afterPath="$PROJECT_DIR$/popularity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +46,15 @@
     "Python.Python Console.executor": "Debug",
     "Python.SearchApp.executor": "Debug",
     "Python.TwitterUser.executor": "Run",
+    "Python.popularity.executor": "Debug",
+    "Python.temp.executor": "Debug",
+    "Python.test.executor": "Run",
     "Python.twitter_connection.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "dbms__v1",
     "last_opened_file_path": "/Users/omkar/Desktop/pyCharm/Twitter_Search",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "http.certificates"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -156,6 +158,31 @@
           <url>file://$PROJECT_DIR$/SearchApp.py</url>
           <line>13</line>
           <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/SearchApp.py</url>
+          <line>73</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/SearchApp.py</url>
+          <line>91</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/popularity.py</url>
+          <line>175</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/popularity.py</url>
+          <line>189</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/MongoDBConnector.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

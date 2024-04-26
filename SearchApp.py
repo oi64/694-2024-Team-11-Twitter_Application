@@ -7,7 +7,7 @@ from popularity import return_top_5
 
 ##
 cwd = os.getcwd()
-print(cwd)
+# print(cwd)
 # Load the TOML file
 with open(f'{cwd}/.streamlit/config.toml', 'r') as f:
     config = toml.load(f)
@@ -87,6 +87,12 @@ def main():
                             st.write(f"Tweet: {result[1]}")
                         except Exception as e:
                             print(e)
+
+                        try:
+                            st.write(f"Retweets: {result[8]} \t\t  Likes: {result[9]}")
+                        except Exception as e:
+                            print(e)
+
                         st.divider()
 
 
