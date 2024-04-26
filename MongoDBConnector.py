@@ -216,10 +216,10 @@ def main():
     if collection.count_documents({}) == 0:
         insert_tweets_from_file(collection)
     if db['RawData'].count_documents({}) == 0:
-        full_processing_pipeline()
-    if True:#client is not None and db is not None and collection is not None:
+        full_processing_pipeline(filename)
+    if client is not None and db is not None and collection is not None:
             print(f'Database: {db}\nCollection: {collection}')
-            if True: #not any('text_embeddings' in doc for doc in collection.find()):
+            if not any('text_embeddings' in doc for doc in collection.find()):
                 add_tweet_embeddings_to_documents(collection)
                 cluster_tweets_and_save_to_collections(collection, db)
                 calculate_and_save_cluster_centroids(db)

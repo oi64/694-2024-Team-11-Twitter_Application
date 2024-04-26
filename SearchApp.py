@@ -4,6 +4,8 @@ import toml
 import pymongo
 import os
 from popularity import return_top_5
+from popular_users import search_users_by_keyword
+from cache import cache
 
 ##
 cwd = os.getcwd()
@@ -69,12 +71,21 @@ def main():
     # Button: User triggers the search
     if st.button("Search"):
         if search_query:
+            found = False
             # Perform the search and get results
-            results = return_top_5(search_query, collection)
+            if search_query in cache:
+                found = True
+                results_tweets = cache[search_query]['Tweets']
+                results_users = cache[search_query]['Users']
+            else:
+                results_tweets = return_top_5(search_query, collection)
+                results_users = search_users_by_keyword(search_query)
 
+
+            
             # Display search results
             st.subheader("Search Results")
-            for result in results:
+            for result in results_tweets:
                 with st.container():
                     if result :
                         try:
@@ -87,6 +98,33 @@ def main():
                         except Exception as e:
                             print(e)
                         st.divider()
+
+            for result in results_users:
+                with st.container():
+                    if result :
+                        try:
+                            st.write(f"User: {result[0]}")
+                        except Exception as e:
+                            print(e)
+
+                        try:
+                            st.write(f"User Name: {result[1]}")
+                        except Exception as e:
+                            print(e)
+
+                        try:
+                            st.write(f"Description: {result[2]}")
+                        except Exception as e:
+                            print(e)
+
+                        try:
+                            st.write(f"Followers: {result[3]}")
+                        except Exception as e:
+                            print(e)
+
+                        st.divider()
+            if not found:
+                cache[search_query] = {'Tweets': results_tweets, 'Users':results_users}
 
 
 if __name__ == "__main__":
