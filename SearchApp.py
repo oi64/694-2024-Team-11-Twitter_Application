@@ -10,6 +10,7 @@ import time
 
 ##
 cwd = os.getcwd()
+
 # Load the TOML file
 with open(f'{cwd}/.streamlit/config.toml', 'r') as f:
     config = toml.load(f)
@@ -144,6 +145,12 @@ def main():
                             st.write(f"Tweet: {result[1]}")
                         except Exception as e:
                             print(e)
+
+                        try:
+                            st.write(f"Retweets: {result[8]} \t\t  Likes: {result[9]}")
+                        except Exception as e:
+                            print(e)
+
                         st.divider()
             if not found:
                 c_data = {'Tweets': results_tweets, 'Users':results_users, 'Hashtags':results_hashtags}
