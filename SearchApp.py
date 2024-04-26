@@ -5,7 +5,8 @@ import pymongo
 import os
 from popularity import return_top_5
 from popular_users import search_users_by_keyword, find_hashtags_by_keyword
-from cache import cache
+from cache import cache, start_background_task, update_cache
+import time
 
 ##
 cwd = os.getcwd()
@@ -63,13 +64,17 @@ collection = db["tweet_cluster_centroids"]
 
 ##
 def main():
+    start_background_task()
     st.title("Search Tweets")
+
+
 
     # Input: User enters search query
     search_query = st.text_input("Enter your search query")
 
     # Button: User triggers the search
     if st.button("Search"):
+        start_time = time.time()
         if search_query:
             found = False
             # Perform the search and get results
@@ -83,6 +88,7 @@ def main():
                 results_users = search_users_by_keyword(search_query)
                 results_hashtags = find_hashtags_by_keyword(keyword=search_query)
 
+            print(f'Time:  {(time.time() - start_time)/10} + {search_query}')
 
             
             # Display search results
@@ -140,7 +146,11 @@ def main():
                             print(e)
                         st.divider()
             if not found:
-                cache[search_query] = {'Tweets': results_tweets, 'Users':results_users, 'Hashtags':results_hashtags}
+                c_data = {'Tweets': results_tweets, 'Users':results_users, 'Hashtags':results_hashtags}
+                cache[search_query] = c_data
+        
+
+
 
 
 if __name__ == "__main__":
