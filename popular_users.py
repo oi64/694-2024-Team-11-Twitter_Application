@@ -17,12 +17,15 @@ def search_users_by_keyword(keyword):
     
     results = connector.execute_query(query, values)
     
-    for user in results:
-        print(user)  # Print each user found by the query
+    # for user in results:
+    #     print(user)  # Print each user found by the query
+
+    return results
     
     connector.close_server_connection()
 
 # Example usage
 if __name__ == "__main__":
     keyword = input("Enter a keyword to search in users: ")
-    search_users_by_keyword(keyword)
+    results = search_users_by_keyword(keyword)
+    print(results)

@@ -23,10 +23,16 @@ class MySQLConnector:
         except mysql.connector.Error as err:
             print(f"Error while connecting to MySQL server: {err}")
 
-    def execute_query(self, query, values):
-        self._cursor = self._cnx.cursor()
-        self._cursor.execute(query, values)
-        self._commit_changes()
+    def execute_query(self, query, values=None):
+        try:
+            with self._cnx.cursor() as cursor:
+                cursor.execute(query, values or ())
+                if query.strip().lower().startswith('select'):
+                    return cursor.fetchall()  # Fetch all results
+                self._cnx.commit()
+        except mysql.connector.Error as err:
+            print(f"Error executing query: {err}")
+
 
     def _commit_changes(self):
         self._cnx.commit()
