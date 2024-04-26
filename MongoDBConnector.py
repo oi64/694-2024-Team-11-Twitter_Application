@@ -39,16 +39,18 @@ def connect_to_mongodb(database_name, collection_name):
 
 def insert_tweets_from_file(collection, filename = filename):
     error_count = 0
-
-    with open(filename, "r") as f1:
+    retweeted_tweets = 0
+    with (open(filename, "r") as f1):
         for line in tqdm(f1):
             tweet = {}
             try:
                 data = json.loads(line)
-
                 if data['text'].startswith('RT'):
                     continue
                 else:
+                    # print(data,'\n'*2)
+
+                    tweet["favorite_count"] = data.get("favorite_count", 0)
                     tweet["_id"] = data["id_str"]
                     tweet["text"] = data['text']
                     tweet["user"] = data['user']['screen_name']
@@ -56,10 +58,15 @@ def insert_tweets_from_file(collection, filename = filename):
                     tweet["sentiment_score"] = sentiment_score(data['text'])  
                     tweet["user_influence"] = user_influence(data['user']) 
                     tweet["credibility_score"] = credibility_score(data['user'])
-                    tweet["engagement_rate"] = engagement_rate(data)  
+                    engagement_data = engagement_rate(data)
+                    tweet["engagement_rate"] = engagement_data[0]
+                    tweet['retweet_count'] = data['retweet_count']
+
                     tweet["recency_score"] = recency_score(data)  
                     tweet["media_score"] = media_score(data) 
-                    
+
+
+
                 collection.insert_one(tweet)
             except Exception as e:
                 # if there is an error loading the json of the tweet, skip
@@ -67,7 +74,7 @@ def insert_tweets_from_file(collection, filename = filename):
                 # print(f"Error inserting tweet: {e}")
                 continue
     print(f'The number of errors is {error_count}')
-
+    print("retweeted_tweets " ,retweeted_tweets)
     return None
 
 
@@ -216,8 +223,7 @@ def main():
     
     if collection.count_documents({}) == 0:
         insert_tweets_from_file(collection)
-    if db['RawData'].count_documents({}) == 0:
-        full_processing_pipeline(filename)
+
     if client is not None and db is not None and collection is not None:
             print(f'Database: {db}\nCollection: {collection}')
             if not any('text_embeddings' in doc for doc in collection.find()):

@@ -1,4 +1,7 @@
+
 from MongoDBConnector import connect_to_mongodb, database_name, collection_name, filename
+import json
+from sklearn.metrics.pairwise import euclidean_distances
 from sentence_transformers import SentenceTransformer
 
 client, db, collection = connect_to_mongodb(database_name, collection_name)
@@ -26,4 +29,16 @@ def print_collection_names(db):
     print(db.list_collection_names())
 
 print_collection_names(db)
-# delete_all_collections()
+
+##
+delete_all_collections()
+
+
+# from sklearn.cluster import KMeans
+# import numpy as np
+#
+# # Example data
+# X = np.random.rand(100, 5)
+# kmeans = KMeans(n_clusters=5)
+# kmeans.fit(X)
+

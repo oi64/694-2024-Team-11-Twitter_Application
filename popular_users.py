@@ -25,7 +25,7 @@ def find_top_10_users():
     connector.get_server_connection()
     
     query = """
-        SELECT id, name, description, followers_count
+        SELECT id, screen_name, name, description, followers_count
         FROM twitter_users
         ORDER BY followers_count DESC
         LIMIT 10;

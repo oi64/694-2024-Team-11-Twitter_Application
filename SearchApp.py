@@ -4,12 +4,16 @@ import toml
 import pymongo
 import os
 from popularity import return_top_5
-from popular_users import search_users_by_keyword, find_hashtags_by_keyword
 from cache import cache, start_background_task, update_cache
 import time
+from popular_users import search_users_by_keyword, find_hashtags_by_keyword, find_top_10_users, find_top_hashtags
+from cache import cache
+
+
 
 ##
 cwd = os.getcwd()
+
 # Load the TOML file
 with open(f'{cwd}/.streamlit/config.toml', 'r') as f:
     config = toml.load(f)
@@ -64,94 +68,131 @@ collection = db["tweet_cluster_centroids"]
 
 ##
 def main():
+
     start_background_task()
-    st.title("Search Tweets")
+
+    tabs = ["Search", "Trending"]
+    tab = st.sidebar.radio("Select Tab", tabs)
+
+    if tab == "Search":
+        st.title("Search Tweets")
 
 
 
-    # Input: User enters search query
-    search_query = st.text_input("Enter your search query")
+        # Input: User enters search query
+        search_query = st.text_input("Enter your search query")
 
-    # Button: User triggers the search
-    if st.button("Search"):
-        start_time = time.time()
-        if search_query:
-            found = False
-            # Perform the search and get results
-            if search_query in cache:
-                found = True
-                results_tweets = cache[search_query]['Tweets']
-                results_users = cache[search_query]['Users']
-                results_hashtags = cache[search_query]['Hashtags']
-            else:
-                results_tweets = return_top_5(search_query, collection)
-                results_users = search_users_by_keyword(search_query)
-                results_hashtags = find_hashtags_by_keyword(keyword=search_query)
+        # Button: User triggers the search
+        if st.button("Search"):
+            start_time = time.time()
+            if search_query:
+                found = False
+                # Perform the search and get results
+                if search_query in cache:
+                    found = True
+                    results_tweets = cache[search_query]['Tweets']
+                    results_users = cache[search_query]['Users']
+                    results_hashtags = cache[search_query]['Hashtags']
+                else:
+                    results_tweets = return_top_5(search_query, collection)
+                    results_users = search_users_by_keyword(search_query)
+                    results_hashtags = find_hashtags_by_keyword(keyword=search_query)
 
-            print(f'Time:  {(time.time() - start_time)/10} + {search_query}')
 
-            
-            # Display search results
-            st.subheader("Search Results")
-            
-            st.header('Users')
-            for result in results_users:
-                with st.container():
-                    if result :
-                        try:
-                            st.write(f"User: {result[0]}")
-                        except Exception as e:
-                            print(e)
+                print(f'Time:  {(time.time() - start_time)/10} + {search_query}')
 
-                        try:
-                            st.write(f"User Name: {result[1]}")
-                        except Exception as e:
-                            print(e)
 
-                        try:
-                            st.write(f"Description: {result[2]}")
-                        except Exception as e:
-                            print(e)
+                # Display search results
+                st.subheader("Search Results")
 
-                        try:
-                            st.write(f"Followers: {result[3]}")
-                        except Exception as e:
-                            print(e)
+                st.header('Users')
+                for result in results_users:
+                    with st.container():
+                        if result :
+                            try:
+                                st.write(f"User: {result[0]}")
+                            except Exception as e:
+                                print(e)
 
-                        st.divider()
+                            try:
+                                st.write(f"User Name: {result[1]}")
+                            except Exception as e:
+                                print(e)
 
-            st.header('Hashtags')
-            for result in results_hashtags:
-                with st.container():
-                    if result :
-                        try:
-                            st.write(f"{result['hashtag']}")
-                        except Exception as e:
-                            print(e)
+                            try:
+                                st.write(f"Description: {result[2]}")
+                            except Exception as e:
+                                print(e)
 
-                        st.divider()
+                            try:
+                                st.write(f"Followers: {result[3]}")
+                            except Exception as e:
+                                print(e)
 
-            st.header('Tweets')
-            for result in results_tweets:
-                with st.container():
-                    if result :
-                        try:
-                            st.write(f"{result[0]}")
-                        except Exception as e:
-                            print(e)
+                            st.divider()
 
-                        try:
-                            st.write(f"Tweet: {result[1]}")
-                        except Exception as e:
-                            print(e)
-                        st.divider()
-            if not found:
-                c_data = {'Tweets': results_tweets, 'Users':results_users, 'Hashtags':results_hashtags}
-                cache[search_query] = c_data
+                st.header('Hashtags')
+                for result in results_hashtags:
+                    with st.container():
+                        if result :
+                            try:
+                                st.write(f"{result['hashtag']}")
+                            except Exception as e:
+                                print(e)
+
+                            st.divider()
+
+                st.header('Tweets')
+                for result in results_tweets:
+                    with st.container():
+                        if result :
+                            try:
+                                st.write(f"{result[0]}")
+                            except Exception as e:
+                                print(e)
+
+                            try:
+                                st.write(f"Tweet: {result[1]}")
+                            except Exception as e:
+                                print(e)
+
+                            try:
+                                st.write(f"Retweets: {result[8]} \t\t  Likes: {result[9]}")
+                            except Exception as e:
+                                print(e)
+
+                            st.divider()
+
+
+
+                if not found:
+                    c_data = {'Tweets': results_tweets, 'Users':results_users, 'Hashtags':results_hashtags}
+                    cache[search_query] = c_data
         
 
 
 
+    elif tab == "Trending":
+        st.title("Trending")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Get top users"):
+                top_users = find_top_10_users()
+                st.subheader("Top Users")
+
+                # Create a table to display the top users
+                for user in top_users:
+                    st.write(f"Screen Name: @{user[1]}")
+                    st.write(f"Name: {user[2]}")
+                    st.write(f"Description: {user[3]}")
+                    st.write(f"Followers: {user[0]}")
+                    st.divider()
+        with col2:
+            if st.button("Get Trending Hashtags"):
+                top_hashtags = find_top_hashtags()
+                for hashtag in top_hashtags:
+                    st.write(hashtag)
 
 if __name__ == "__main__":
     main()
