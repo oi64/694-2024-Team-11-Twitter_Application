@@ -145,10 +145,78 @@ def delete_cluster_centroids_collection(db):
     centroids_collection = db['tweet_cluster_centroids']
     centroids_collection.delete_many({})
 
+import pymongo
+import json
+from tqdm import tqdm
+from sentence_transformers import SentenceTransformer
+
+def full_processing_pipeline(filename):
+    # Connect to MongoDB
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = client['twitter']
+
+    # Load and insert raw data into the 'RawData' collection
+    with open(filename, "r") as file:
+        tweets = [json.loads(line) for line in tqdm(file) if line.strip()]
+        collection = db['RawData']
+        collection.insert_many(tweets)
+        print(f"Inserted {len(tweets)} documents into RawData.")
+
+    # Define the projection for transformation
+    pipeline_transform = [
+        {
+            '$project': {
+                '_id': 1, 
+                'created_at': 1, 'id': 1, 'text': 1, 'source': 1, 'truncated': 1,
+                'in_reply_to_status_id': 1, 'in_reply_to_user_id': 1, 'in_reply_to_screen_name': 1,
+                'user_id': '$user.id', 'display_name': '$user.name', 'profile_name': '$user.screen_name',
+                'user_is_protected': '$user.protected', 'user_is_verified': '$user.verified',
+                'user_follower_count': '$user.followers_count', 'user_friends_count': '$user.friends_count',
+                'user_listed_count': '$user.listed_count', "user_created_at": "$user.created_at",
+                'geo': 1, "coordinates": 1, "place": 1, "contributors": 1, "is_quote_status": 1,
+                "quote_count": 1, "reply_count": 1, "retweet_count": 1, "favorite_count": 1,
+                "favorited": 1, "retweeted": 1, "possibly_sensitive": 1, "filter_level": 1, "lang": 1,
+                "timestamp_ms": 1,
+                'hashtags': "$entities.hashtags", 'urls': "$entities.urls", 
+                "user_mentions": "$entities.user_mentions", 'symbols': "$entities.symbols"
+            }
+        }
+    ]
+    transformed_docs = list(db['RawData'].aggregate(pipeline_transform))
+    db['TweetsData'].insert_many(transformed_docs)
+    print(f"Transformed and inserted {len(transformed_docs)} documents into TweetsData.")
+
+    # Aggregate and index for user ID -> Tweet._id mapping
+    pipeline_user = [
+        {'$group': {'_id': '$user_id', 'ids': {'$push': '$_id'}}},
+        {'$project': {'user_id': '$_id', '_id': 0, 'ids': 1}}
+    ]
+    user_docs = list(db['TweetsData'].aggregate(pipeline_user))
+    db['Userid-Tweets._id'].insert_many(user_docs)
+    db['Userid-Tweets._id'].create_index([('user_id', pymongo.ASCENDING)])
+    print(f"Indexed {len(user_docs)} user documents in Userid-Tweets._id.")
+
+    # Aggregate and index for hashtags -> Tweet._id mapping
+    pipeline_hashtag = [
+        {'$unwind': '$hashtags'},
+        {'$group': {'_id': '$hashtags', 'ids': {'$push': '$_id'}}},
+        {'$project': {'hashtag': '$_id', '_id': 0, 'ids': 1}}
+    ]
+    hashtag_docs = list(db['TweetsData'].aggregate(pipeline_hashtag))
+    db['Hashtags-Tweets._id'].insert_many(hashtag_docs)
+    db['Hashtags-Tweets._id'].create_index([('hashtag', pymongo.ASCENDING)])
+    print(f"Indexed {len(hashtag_docs)} hashtag documents in Hashtags-Tweets._id.")
+
+    # Close the MongoDB connection
+    return None
+
+
 def main():
     client, db, collection = connect_to_mongodb(database_name, collection_name)
     if collection.count_documents({}) == 0:
         insert_tweets_from_file(collection)
+    if db['RawData'].count_documents({}) == 0:
+        full_processing_pipeline()
     if True:#client is not None and db is not None and collection is not None:
             print(f'Database: {db}\nCollection: {collection}')
             if True: #not any('text_embeddings' in doc for doc in collection.find()):
