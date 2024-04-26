@@ -125,7 +125,7 @@ def compute_score(tweet):
         'credibility': 0.2,
         'engagement': 5,
         'recency': 0.1,
-        'media': 0.2
+        'media': 0.2 
     }
 
     features = {
