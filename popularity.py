@@ -5,7 +5,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 from sentence_transformers import SentenceTransformer
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
-# nltk.download('vader_lexicon')
+nltk.download('vader_lexicon')
 from datetime import datetime
 import pymongo
 import heapq
@@ -90,7 +90,7 @@ def engagement_rate(tweet):
 
 
 def sentiment_score(text):
-    download_vader_if_not_exist()
+    # download_vader_if_not_exist()
     sia = SentimentIntensityAnalyzer()
     score = sia.polarity_scores(text)
     return score['compound']  # Return the compound score which represents an aggregate of all sentiment scores
@@ -121,11 +121,11 @@ def user_influence(user_data):
 def compute_score(tweet):
     weights = {
         'sentiment': 0.2,
-        'influence': 0.5,
+        'influence': 10,
         'credibility': 0.2,
-        'engagement': 0.5,
+        'engagement': 5,
         'recency': 0.1,
-        'media': 0.1
+        'media': 0.2
     }
 
     features = {
@@ -147,7 +147,7 @@ def compute_score(tweet):
     return score
 
 
-def return_top_5(input_keyword, collection, n_clusters = 15):
+def return_top_5(input_keyword, collection = collection, n_clusters = 15):
     # Retrieve the top 50 tweets from a function that ranks them
 
     model = SentenceTransformer('all-mpnet-base-v2')

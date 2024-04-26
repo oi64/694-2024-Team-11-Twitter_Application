@@ -7,7 +7,6 @@ from popularity import return_top_5
 
 ##
 cwd = os.getcwd()
-print(cwd)
 # Load the TOML file
 with open(f'{cwd}/.streamlit/config.toml', 'r') as f:
     config = toml.load(f)
