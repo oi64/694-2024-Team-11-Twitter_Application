@@ -213,6 +213,7 @@ def full_processing_pipeline(filename):
 
 def main():
     client, db, collection = connect_to_mongodb(database_name, collection_name)
+    
     if collection.count_documents({}) == 0:
         insert_tweets_from_file(collection)
     if db['RawData'].count_documents({}) == 0:
