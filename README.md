@@ -23,8 +23,8 @@ This Streamlit-based application provides an interactive platform for searching 
 Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/twitter-search-dashboard.git
-cd twitter-search-dashboard
+git clone https://github.com/oi64/Twitter_Search_Application.git
+cd Twitter_Search_Application
 ```
 
 Install the required Python libraries:
@@ -42,7 +42,7 @@ Modify the MongoDB connection string in the application code if your setup is di
 To run the app, navigate to the project directory and run:
 
 ```bash
-streamlit run app.py
+streamlit run SearchApp.py
 ```
 
 The application will start and be accessible through a web browser at `http://localhost:8501`.
