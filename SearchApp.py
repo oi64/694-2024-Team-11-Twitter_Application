@@ -192,7 +192,7 @@ def main():
             if st.button("Get Trending Hashtags"):
                 top_hashtags = find_top_hashtags()
                 for hashtag in top_hashtags:
-                    st.write(hashtag)
+                    st.write(hashtag['hashtag']['text'])
 
 if __name__ == "__main__":
     main()

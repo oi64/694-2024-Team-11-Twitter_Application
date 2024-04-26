@@ -16,11 +16,12 @@ def save_cache_state():
     """Saves the current state of the cache to a JSON file."""
     try:
         # Define the filename where the cache will be saved
-        filename = 'cache_state.json'
+        time_now = str(time.time())
+        filename = f'./cached_data/cache_state-{time_now}.json'
         
         # Open the file in write mode and dump the cache as JSON
         with open(filename, 'w') as f:
-            json.dump(str(cache), f, indent=4)  # Use `indent` for pretty-printing
+            json.dump(str(cache)+'\n', f, indent=4)  # Use `indent` for pretty-printing
         
         print("Cache state saved successfully.")
     except Exception as e:

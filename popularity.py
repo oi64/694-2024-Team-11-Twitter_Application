@@ -77,7 +77,8 @@ def rankTweets(vector_of_input_keyword, closest_cluster):
     top_5_indices = distances.argsort()[:50]
 
     # Retrieve top 5 tweets
-    tweets_in_cluster = closest_cluster_collection.find()
+    tweets_in_cluster = list(closest_cluster_collection.find({"user": {"$exists": True}}))
+    print(list(tweets_in_cluster))
     all_tweets = [[_tweet["user"],_tweet["text"], _tweet["created_at"],
                    _tweet["sentiment_score"], _tweet['user_influence'],
                    _tweet['credibility_score'], _tweet['engagement_rate'],

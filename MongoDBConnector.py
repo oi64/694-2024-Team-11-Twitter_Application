@@ -215,20 +215,55 @@ def full_processing_pipeline(filename):
     print(f"Indexed {len(hashtag_docs)} hashtag documents in Hashtags-Tweets._id.")
 
     # Close the MongoDB connection
+
+    with open('./data/corona-out-2') as f:
+        all_lines_list = f.readlines()
+    filtered_json_list = [json.loads(line) for line in all_lines_list if line.strip()]
+
+    all_tweets = []
+    for each_record in filtered_json_list:
+        records_dict = {}
+        for each_col in each_record:
+            if each_col == 'user':
+                for each_user_col in each_record[each_col]:
+                    records_dict['user.'+each_user_col] = each_record[each_col][each_user_col]
+            ## Inside tweet as new tweet.
+            elif each_col in ['retweeted_status','quoted_status']:
+                records_dict_2 = {}
+                for each_sub_col in each_record[each_col]:
+                    if each_sub_col == 'user':
+                        records_dict_2['user.'+each_sub_col] = each_record[each_col][each_sub_col]
+                    else:
+                        records_dict_2[each_sub_col] = each_record[each_col][each_sub_col]
+                all_tweets.append(records_dict_2)
+                    
+            else: 
+                records_dict[each_col] = each_record[each_col]
+        all_tweets.append(records_dict)
+
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = client['twitter']
+    collection = db['TweetsData2.0']
+    collection.insert_many(all_tweets)
+    print("Data inserted successfully.")
     return None
 
 
 def main():
     client, db, collection = connect_to_mongodb(database_name, collection_name)
+    new_collection = db['TweetsData4.0']
     
     if collection.count_documents({}) == 0:
-        insert_tweets_from_file(collection)
+        insert_tweets_from_file(new_collection)
+    
+    if db['RawData'].count_documents({}) == 0:
+        full_processing_pipeline(filename)
 
-    if client is not None and db is not None and collection is not None:
-            print(f'Database: {db}\nCollection: {collection}')
-            if not any('text_embeddings' in doc for doc in collection.find()):
-                add_tweet_embeddings_to_documents(collection)
-                cluster_tweets_and_save_to_collections(collection, db)
+    if client is not None and db is not None and new_collection is not None:
+            print(f'Database: {db}\nCollection: {new_collection}')
+            if not any('text_embeddings' in doc for doc in new_collection.find()):
+                add_tweet_embeddings_to_documents(new_collection)
+                cluster_tweets_and_save_to_collections(new_collection, db)
                 calculate_and_save_cluster_centroids(db)
             else:
                 print("Embeddings already exist in some documents. Skipping the functions.")
