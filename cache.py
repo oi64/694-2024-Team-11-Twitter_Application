@@ -3,6 +3,8 @@ import threading
 import time
 import json
 from collections import OrderedDict
+import pymongo
+from pymongo import MongoClient
 
 cache = {'Static':{
     'Users': find_top_10_users(),
@@ -55,3 +57,26 @@ def update_cache(key, data, max_cache_size=3):
     dynamic_cache[key] = data
     dynamic_cache.move_to_end(key)
     # print(dynamic_cache)
+
+def save_to_mongodb(folder_path, collection_name):
+    # Create a connection to the MongoDB server
+    client = MongoClient('mongodb://localhost:27017/')
+    
+    # Select the 'twitter' database
+    db = client.twitter
+    
+    # Select the specified collection
+    collection = db[collection_name]
+    
+    # Iterate over files in the given folder
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        
+        # Check if file is a file and not a directory
+        if os.path.isfile(file_path):
+            # Open and read the content of the file
+            with open(file_path, 'r') as file:
+                content = json.load(file)  # Assuming the file is in JSON format
+                
+                # Insert the content into the MongoDB collection
+                collection.insert_one(content)
