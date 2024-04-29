@@ -77,7 +77,7 @@ def rankTweets(vector_of_input_keyword, closest_cluster):
     top_5_indices = distances.argsort()[:50]
 
     # Retrieve top 5 tweets
-    tweets_in_cluster = list(closest_cluster_collection.find({"user": {"$exists": True}}))
+    tweets_in_cluster = list(closest_cluster_collection.find())
     print(list(tweets_in_cluster))
     all_tweets = [[_tweet["user"],_tweet["text"], _tweet["created_at"],
                    _tweet["sentiment_score"], _tweet['user_influence'],
@@ -128,12 +128,12 @@ def user_influence(user_data):
 
 def compute_score(tweet):
     weights = {
-        'sentiment': 0,
-        'influence': 0,
-        'credibility': 0,
-        'engagement': 0,
-        'recency': 0,
-        'media': 0,
+        'sentiment': 0.5,
+        'influence': 0.1,
+        'credibility': 0.2,
+        'engagement': 0.1,
+        'recency': 0.5,
+        'media': 0.2,
         'retweet_count':1,
         'favorite_count':1
 
@@ -144,10 +144,10 @@ def compute_score(tweet):
         'influence': tweet[4],
         'credibility': tweet[5],
         'engagement': tweet[6],
-        'recency': tweet[9],
-        'media': tweet[10],
-        'retweet_count': tweet[7],
-        'favorite_count': tweet[8]
+        'recency': tweet[7],
+        'media': tweet[8],
+        'retweet_count': tweet[9],
+        'favorite_count': tweet[10]
     }
 
     # Normalize features to a common scale if necessary

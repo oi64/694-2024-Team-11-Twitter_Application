@@ -157,7 +157,7 @@ def main():
                                 print(e)
 
                             try:
-                                st.write(f"Retweets: {result[8]} \t\t  Likes: {result[9]}")
+                                st.write(f"Retweets: {result[9]} \t\t  Likes: {result[10]}")
                             except Exception as e:
                                 print(e)
 
@@ -169,8 +169,6 @@ def main():
                     c_data = {'Tweets': results_tweets, 'Users':results_users, 'Hashtags':results_hashtags}
                     cache[search_query] = c_data
         
-
-
 
     elif tab == "Trending":
         st.title("Trending")

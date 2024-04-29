@@ -32,7 +32,7 @@ def save_cache_state():
 def cache_saving_task():
     while True:
         save_cache_state()  # Call the function to save cache state
-        time.sleep(60)  # Wait for 300 seconds (5 minutes)
+        time.sleep(300)  # Wait for 300 seconds (5 minutes)
 
 
 
