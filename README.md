@@ -42,6 +42,11 @@ Modify the MongoDB connection string in the application code if your setup is di
 To run the app, navigate to the project directory and run:
 
 ```bash
+python Mongodbconnector.py
+```
+
+
+```bash
 streamlit run SearchApp.py
 ```
 
